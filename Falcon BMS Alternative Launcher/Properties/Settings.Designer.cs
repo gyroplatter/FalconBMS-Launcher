@@ -12,7 +12,7 @@ namespace FalconBMS.Launcher.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.14.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -332,6 +332,90 @@ namespace FalconBMS.Launcher.Properties {
             }
             set {
                 this["Misc_3DClickableCursorFixToCenter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Misc_bRingCommMenu {
+            get {
+                return ((bool)(this["Misc_bRingCommMenu"]));
+            }
+            set {
+                this["Misc_bRingCommMenu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Misc_bMFDHighContrast {
+            get {
+                return ((bool)(this["Misc_bMFDHighContrast"]));
+            }
+            set {
+                this["Misc_bMFDHighContrast"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Misc_bExportRTTTextures {
+            get {
+                return ((bool)(this["Misc_bExportRTTTextures"]));
+            }
+            set {
+                this["Misc_bExportRTTTextures"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Misc_bReducePSFires {
+            get {
+                return ((bool)(this["Misc_bReducePSFires"]));
+            }
+            set {
+                this["Misc_bReducePSFires"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Misc_nNewTerrainHiresTilesDistKM {
+            get {
+                return ((bool)(this["Misc_nNewTerrainHiresTilesDistKM"]));
+            }
+            set {
+                this["Misc_nNewTerrainHiresTilesDistKM"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double Misc_fRadarScale {
+            get {
+                return ((double)(this["Misc_fRadarScale"]));
+            }
+            set {
+                this["Misc_fRadarScale"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double Misc_fCursorSpeed {
+            get {
+                return ((double)(this["Misc_fCursorSpeed"]));
+            }
+            set {
+                this["Misc_fCursorSpeed"] = value;
             }
         }
     }

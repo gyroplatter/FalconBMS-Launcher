@@ -504,7 +504,7 @@ namespace FalconBMS.Launcher.Windows
                     if (appReg.IsUniqueNameDefined() == false)
                         return;
                 }
-
+                appProperties.SaveUISetup();
                 appReg.getLauncher().execute(sender);
             }
             catch (FileNotFoundException ex)
@@ -914,6 +914,83 @@ namespace FalconBMS.Launcher.Windows
             UpdateDataGridBindingSource();
             return;
         }
+
+        // Parse Tag metadata like: "cfg=g_bRingCommMenu;type=bool;default=1"
+        private static System.Collections.Generic.Dictionary<string, string> ParseMeta(string tag)
+        {
+            var meta = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (string.IsNullOrWhiteSpace(tag)) return meta;
+
+            var parts = tag.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var p in parts)
+            {
+                var kv = p.Split(new[] { '=' }, 2);
+                if (kv.Length == 2) meta[kv[0].Trim()] = kv[1].Trim();
+            }
+            return meta;
+        }
+
+        // Walk logical children under a container
+        private static System.Collections.Generic.IEnumerable<FrameworkElement> EnumerateFrameworkElements(DependencyObject root)
+        {
+            var stack = new System.Collections.Generic.Stack<DependencyObject>();
+            if (root != null) stack.Push(root);
+            while (stack.Count > 0)
+            {
+                var d = stack.Pop();
+                foreach (var child in LogicalTreeHelper.GetChildren(d))
+                {
+                    if (child is DependencyObject dep)
+                    {
+                        if (child is FrameworkElement fe) yield return fe;
+                        stack.Push(dep);
+                    }
+                }
+            }
+        }
+
+        // Reset only controls under a given container (subtab)
+        private void ResetFlagsInContainer(DependencyObject root)
+        {
+            if (root == null) return;
+
+            foreach (var fe in EnumerateFrameworkElements(root))
+            {
+                var tagStr = fe.Tag as string;
+                if (string.IsNullOrWhiteSpace(tagStr) || tagStr.IndexOf("cfg=", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue; // only controls that declare cfg/default are reset
+
+                var meta = ParseMeta(tagStr);
+                var type = meta.TryGetValue("type", out var t) ? t.ToLowerInvariant() : "bool";
+
+                if (type == "bool" && fe is CheckBox cb)
+                {
+                    bool def = false;
+                    if (meta.TryGetValue("default", out var d))
+                        def = (d == "1" || d.Equals("true", StringComparison.OrdinalIgnoreCase));
+                    cb.IsChecked = def;
+                }
+                else if ((type == "float" || type == "double") && fe is ComboBox combo)
+                {
+                    // Your combos use SelectedValuePath="Tag"; defaults are strings like "1", "0.75", etc.
+                    if (meta.TryGetValue("default", out var defStr))
+                        combo.SelectedValue = defStr;
+                }
+                // (Extend for int/string/slider if you add those types later.)
+            }
+        }
+
+        // Button handlers (one per subtab)
+        private void FlagsReset_Comms_Click(object sender, RoutedEventArgs e)
+        {
+            ResetFlagsInContainer(Flags_CommsRoot);
+        }
+
+        private void FlagsReset_Hardware_Click(object sender, RoutedEventArgs e)
+        {
+            ResetFlagsInContainer(Flags_HardwareRoot);
+        }
+        // END Parse Tag metadata like: "cfg=g_bRingCommMenu;type=bool;default=1"
 
     }
 }

@@ -108,7 +108,7 @@
             <Grid HorizontalAlignment="Stretch" Height="auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="auto"/>
         </Border>
         <TabControl x:Name="LargeTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged" Margin="0,64,0.333,0.334" Background="{x:Null}" Grid.RowSpan="2">
-            <TabItem Header="LAUNCHER" x:Name="Tab_Launcher" HorizontalAlignment="Center" Margin="535,-40,-535.333,40.333">
+            <TabItem Header="LAUNCHER" x:Name="Tab_Launcher" HorizontalAlignment="Center" Margin="446,-40,-535,40">
                 <Grid>
 
                     <Border BorderThickness="1" HorizontalAlignment="Left" Height="72" Width="638" Margin="48,0,0,97" VerticalAlignment="Bottom">
@@ -285,7 +285,7 @@
                     <Label Content="News" HorizontalAlignment="Left" Margin="48,10,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" FontStyle="Italic"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="AXISASSIGN" Margin="535.333,-40,-535,40.333">
+            <TabItem Header="AXISASSIGN" Margin="496,-40,-495,40">
                 <Grid>
                     <TabControl HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="auto" Margin="10,0" Background="{x:Null}">
                         <TabItem Header=" FLIGHT CONTROL &amp; AVIONICS" Controls:ControlsHelper.HeaderFontSize="24" Margin="205,-46,-205,46">
@@ -540,7 +540,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="KEYMAPPING" Margin="535,-40,-536,40.333">
+            <TabItem Header="KEYMAPS" Margin="500,-40,-501,40">
                 <Grid Margin="0,1,-0.333,0.333">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="334*"/>
@@ -586,6 +586,230 @@
                     <Button x:Name="ImportButton" Content="Import Key File..." HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20,20,240,20" Width="129" Click="ImportKeyfile_Click" Height="27" Grid.Column="1"/>
                 </Grid>
             </TabItem>
+
+            <!-- FLAGS TAB (start) -->
+            <TabItem Header="FLAGS" x:Name="Tab_Flags" Margin="504,-40,-502,40">
+                <TabItem.Resources>
+                    <!-- AXISASSIGN-style offset for all FLAGS subtabs -->
+                    <Style x:Key="FlagsSubtabScrollViewer" TargetType="ScrollViewer">
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                        <Setter Property="Margin" Value="-10,-45,-10,23.667"/>
+                    </Style>
+
+                    <!-- Section panel chrome -->
+                    <Style x:Key="FlagsPanelBorder" TargetType="Border">
+                        <Setter Property="Margin" Value="0,0,0,10"/>
+                        <Setter Property="BorderBrush" Value="#80FFFFFF"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="14"/>
+                        <Setter Property="Background" Value="#7F202020"/>
+                    </Style>
+
+                    <!-- Default TextBlock styling for FLAGS (section headers) -->
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="LightGray"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Margin" Value="0,0,0,4"/>
+                    </Style>
+
+                    <!-- Default CheckBox styling for FLAGS -->
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="LightGray"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="Margin" Value="0,6,0,0"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    </Style>
+
+                    <!-- Helper/description text under each checkbox -->
+                    <Style x:Key="FlagHelpText" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Foreground" Value="LightGray"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Setter Property="Margin" Value="20,0,0,12"/>
+                    </Style>
+
+                    <!-- ComboBox / Dropdown styling -->
+                    <Style x:Key="FlagsComboBox" TargetType="ComboBox">
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="Width" Value="60"/>
+                        <Setter Property="Margin" Value="0,0,10,0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style x:Key="FlagInlineLabel" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="LightGray"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="Margin" Value="0,0,0,0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
+                    </Style>
+                </TabItem.Resources>
+
+                <Grid>
+                    <TabControl HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="10,0"
+                    Background="{x:Null}">
+
+                        <!-- Subtab: AVIONICS & COMMS -->
+                        <TabItem Header="AVIONICS &amp; COMMS"
+                     Controls:ControlsHelper.HeaderFontSize="24"
+                     Margin="605,-46,-605,46">
+
+                            <ScrollViewer Style="{StaticResource FlagsSubtabScrollViewer}">
+                                <Grid x:Name="Flags_CommsRoot" Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- AVIONICS section -->
+                                    <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource FlagsPanelBorder}">
+                                        <StackPanel>
+                                            <TextBlock Text="AVIONICS"/>
+
+                                            <CheckBox x:Name="Misc_bMFDHighContrast"
+                  Content="Enable High Contrast MFDs (bMFDHighContrast)"
+                  Tag="cfg=g_bMFDHighContrast;type=bool;default=0"/>
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+                   Text="Improve text/symbol legibility by boosting contrast on MFD pages."/>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                <ComboBox x:Name="Misc_fRadarScale"
+                      Style="{StaticResource FlagsComboBox}"
+                      SelectedValuePath="Tag"
+                      SelectedValue="1"
+                      Tag="cfg=g_fRadarScale;type=float;default=1;format=0.##">
+                                                    <ComboBoxItem Content="50%"  Tag="0.5"/>
+                                                    <ComboBoxItem Content="75%"  Tag="0.75"/>
+                                                    <ComboBoxItem Content="100%" Tag="1"/>
+                                                    <ComboBoxItem Content="150%" Tag="1.5"/>
+                                                    <ComboBoxItem Content="200%" Tag="2"/>
+                                                </ComboBox>
+
+                                                <TextBlock Text="Radar Scale (fRadarScale)" Style="{StaticResource FlagInlineLabel}"/>
+                                            </StackPanel>
+
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+                      Text="Adjusts the size of radar blips within MFDs."/>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                <ComboBox x:Name="Misc_fCursorSpeed"
+                      Style="{StaticResource FlagsComboBox}"
+                      SelectedValuePath="Tag"
+                      SelectedValue="1"
+                      Tag="cfg=g_fCursorSpeed;type=float;default=1;format=0.##">
+                                                    <!-- default = 100% -->
+                                                    <ComboBoxItem Content="50%"  Tag="0.5"/>
+                                                    <ComboBoxItem Content="75%"  Tag="0.75"/>
+                                                    <ComboBoxItem Content="100%" Tag="1"/>
+                                                    <ComboBoxItem Content="150%" Tag="1.5"/>
+                                                    <ComboBoxItem Content="200%" Tag="2"/>
+                                                </ComboBox>
+
+                                                <TextBlock Text="Radar Cursor Speed (fCursorSpeed)" Style="{StaticResource FlagInlineLabel}"/>
+                                            </StackPanel>
+
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+           Text="Sets the movement speed of the radar cursor within MFDs."/>
+
+                                        </StackPanel>
+                                    </Border>
+                                    <!-- COMMS section -->
+                                    <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource FlagsPanelBorder}">
+                                        <StackPanel>
+                                            <TextBlock Text="COMMS"/>
+                                            <CheckBox x:Name="Misc_bRingCommMenu"
+                                          Content="Enable Ring Comms Menu (bRingCommMenu)"
+                                          Tag="cfg=g_bRingCommMenu;type=bool;default=1"/>
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+                                           Text="Shows the new radial/ring communications menu. Disable to use the legacy table menu."/>
+                                        </StackPanel>
+                                    </Border>
+                                    <!-- RESET section -->
+                                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource FlagsPanelBorder}">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Reset AVIONICS &amp; COMMS to defaults"
+                  Width="220" Height="32"
+                  Click="FlagsReset_Comms_Click"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Subtab: HARDWARE -->
+                        <TabItem Header="HARDWARE"
+         Controls:ControlsHelper.HeaderFontSize="24"
+         Margin="614,-46,-614,46">
+                            <ScrollViewer Style="{StaticResource FlagsSubtabScrollViewer}">
+                                <Grid x:Name="Flags_HardwareRoot" Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- DISPLAY section -->
+                                    <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource FlagsPanelBorder}">
+                                        <StackPanel>
+                                            <TextBlock Text="DISPLAY"/>
+
+                                            <CheckBox x:Name="Misc_bExportRTTTextures"
+                              Content="Export RTT textures (bExportRTTTextures)"
+                  Tag="cfg=g_bExportRTTTextures;type=bool;default=0"/>
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+                               Text="Export cockpit displays (e.g., MFD/DED/HUD) via shared memory for external apps like Helios or MFDE."/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- GRAPHICS section -->
+                                    <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource FlagsPanelBorder}">
+                                        <StackPanel>
+                                            <TextBlock Text="GRAPHICS"/>
+
+                                            <CheckBox x:Name="Misc_nNewTerrainHiresTilesDistKM"
+                              Content="Enable high resolution ground tiles (nNewTerrainHiresTilesDistKM)"
+                              Tag="cfg=g_bExportRTTTextures;type=bool;default=1"/>
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+                              Text="Uses hi-res (16K) terrain tiles when installed with BMS 4.38; otherwise falls back to default (4K) tiles."/>
+
+                                            <CheckBox x:Name="Misc_bReducePSFires"
+                              Content="Reduce PS fire effects (bReducePSFires)"
+                              Tag="cfg=g_bReducePSFires;type=bool;default=0"/>
+                                            <TextBlock Style="{StaticResource FlagHelpText}"
+                              Text="Removes certain particle effects (smoke/explosions) by ~50% to improve performance."/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- RESET section -->
+                                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource FlagsPanelBorder}">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Reset HARDWARE to defaults"
+                  Width="220" Height="32"
+                  Click="FlagsReset_Hardware_Click"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+
+
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <!-- FLAGS TAB (end) -->
         </TabControl>
         <Image x:Name="LOGO000" HorizontalAlignment="Left" VerticalAlignment="Top" Height="49" Source="/Resources/web_banner.png" Stretch="Uniform" Width="363" Margin="24,10,0,0"/>
         <Label x:Name="Version_Number" Content="4.37" HorizontalAlignment="Left" Margin="392,0,0,0" VerticalAlignment="Top" Foreground="#FFC4C4C4" FontSize="36"/>

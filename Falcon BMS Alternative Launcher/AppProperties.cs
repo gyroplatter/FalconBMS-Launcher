@@ -29,6 +29,29 @@ namespace FalconBMS.Launcher
             mainWindow.Misc_SmartScalingOverride.IsChecked = Properties.Settings.Default.Misc_SmartScalingOverride;
             mainWindow.Misc_NaturalHeadMovement.IsChecked  = Properties.Settings.Default.Misc_NaturalHeadMovement;
             mainWindow.Misc_PilotModel.IsChecked           = Properties.Settings.Default.Misc_PilotModel;
+            mainWindow.Misc_bRingCommMenu.IsChecked        = Properties.Settings.Default.Misc_bRingCommMenu;
+            mainWindow.Misc_bMFDHighContrast.IsChecked     = Properties.Settings.Default.Misc_bMFDHighContrast;
+            mainWindow.Misc_bExportRTTTextures.IsChecked   = Properties.Settings.Default.Misc_bExportRTTTextures;
+            mainWindow.Misc_bReducePSFires.IsChecked       = Properties.Settings.Default.Misc_bReducePSFires;
+            mainWindow.Misc_nNewTerrainHiresTilesDistKM.IsChecked = Properties.Settings.Default.Misc_nNewTerrainHiresTilesDistKM;
+
+            // fRadarScale
+            double savedScale = Properties.Settings.Default.Misc_fRadarScale;
+            string savedTag = savedScale.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            mainWindow.Misc_fRadarScale.SelectedValuePath = "Tag";
+            mainWindow.Misc_fRadarScale.SelectedValue = savedTag;
+            // Fallback if the list changed or nothing matched
+            if (mainWindow.Misc_fRadarScale.SelectedValue == null)
+                mainWindow.Misc_fRadarScale.SelectedValue = "1";
+
+            // fCursorSpeed
+            double savedCursor = Properties.Settings.Default.Misc_fCursorSpeed;
+            string savedCursorTag = savedCursor.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            mainWindow.Misc_fCursorSpeed.SelectedValuePath = "Tag";
+            mainWindow.Misc_fCursorSpeed.SelectedValue = savedCursorTag;
+            // Fallback if the list changed or nothing matched
+            if (mainWindow.Misc_fCursorSpeed.SelectedValue == null)
+                mainWindow.Misc_fCursorSpeed.SelectedValue = "1";
 
             // Button Status Default
             if (Properties.Settings.Default.VR_Option == "SteamVR")
@@ -73,6 +96,32 @@ namespace FalconBMS.Launcher
             Properties.Settings.Default.Misc_NaturalHeadMovement  = (bool)mainWindow.Misc_NaturalHeadMovement.IsChecked;
             Properties.Settings.Default.Misc_PilotModel           = (bool)mainWindow.Misc_PilotModel.IsChecked;
             Properties.Settings.Default.VR_Option = (bool)mainWindow.VR_SteamVR.IsChecked ? "SteamVR" : (bool)mainWindow.VR_OpenXR.IsChecked ? "OpenXR" : "NoVR";
+            Properties.Settings.Default.Misc_bRingCommMenu = (bool)mainWindow.Misc_bRingCommMenu.IsChecked;
+            Properties.Settings.Default.Misc_bMFDHighContrast = (bool)mainWindow.Misc_bMFDHighContrast.IsChecked;
+            Properties.Settings.Default.Misc_bExportRTTTextures = (bool)mainWindow.Misc_bExportRTTTextures.IsChecked;
+            Properties.Settings.Default.Misc_bReducePSFires = (bool)mainWindow.Misc_bReducePSFires.IsChecked;
+            Properties.Settings.Default.Misc_nNewTerrainHiresTilesDistKM = (bool)mainWindow.Misc_nNewTerrainHiresTilesDistKM.IsChecked;
+
+            double radarScale = 1.0;
+            if (mainWindow.Misc_fRadarScale?.SelectedValue is string sel &&
+                double.TryParse(sel, System.Globalization.NumberStyles.Float,
+                                System.Globalization.CultureInfo.InvariantCulture,
+                                out var parsed))
+            {
+                radarScale = parsed;
+            }
+            Properties.Settings.Default.Misc_fRadarScale = radarScale;
+
+            double cursorSpeed = 1.0;
+            if (mainWindow.Misc_fCursorSpeed?.SelectedValue is string selCursor &&
+                double.TryParse(selCursor, System.Globalization.NumberStyles.Float,
+                                System.Globalization.CultureInfo.InvariantCulture,
+                                out var parsedCursor))
+            {
+                cursorSpeed = parsedCursor;
+            }
+            Properties.Settings.Default.Misc_fCursorSpeed = cursorSpeed;
+
             Properties.Settings.Default.Save();
         }
 

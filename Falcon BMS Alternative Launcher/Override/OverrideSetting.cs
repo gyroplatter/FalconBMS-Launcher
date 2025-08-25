@@ -49,6 +49,11 @@ namespace FalconBMS.Launcher.Override
             //SavePlcLbk();
             SavePop();
         }
+        private static void WriteIfOverride(StreamWriter cfg, string key, int value, int defaultValue, string comment)
+        {
+            if (value != defaultValue)
+                cfg.WriteLine($"set {key} {value} {comment}");
+        }
 
         protected virtual void SaveConfigfile(Hashtable inGameAxis, DeviceControl deviceControl)
         {
@@ -63,6 +68,35 @@ namespace FalconBMS.Launcher.Override
                 OverridePovDeviceIDs(cfgUser, inGameAxis);
 
                 ApplyVROverrides(cfgUser);
+
+                // ------- Bool FLAGS -------
+                var boolFlags = new (string key, bool current, int def)[]
+                {
+                    ("g_bRingCommMenu",            Properties.Settings.Default.Misc_bRingCommMenu,            1),
+                    ("g_bMFDHighContrast",         Properties.Settings.Default.Misc_bMFDHighContrast,         0),
+                    ("g_bExportRTTTextures",       Properties.Settings.Default.Misc_bExportRTTTextures,       0),
+                    ("g_bReducePSFires",           Properties.Settings.Default.Misc_bReducePSFires,           0),
+                    ("g_nNewTerrainHiresTilesDistKM", Properties.Settings.Default.Misc_nNewTerrainHiresTilesDistKM, 1),
+                };
+
+                foreach (var (key, current, def) in boolFlags)
+                {
+                    WriteIfOverride(cfgUser, key, current ? 1 : 0, def, CommonConstants.CFGOVERRIDECOMMENT);
+                }
+
+                // ------- Float FLAGS -------
+                var floatFlags = new (string key, double current, double def)[]
+                {
+                    ("g_fRadarScale",  Properties.Settings.Default.Misc_fRadarScale,  1.0),
+                    ("g_fCursorSpeed", Properties.Settings.Default.Misc_fCursorSpeed, 1.0),
+                };
+
+                foreach (var (key, current, def) in floatFlags)
+                {
+                    if (Math.Abs(current - def) > 1e-9)
+                        cfgUser.WriteLine($"set {key} {current.ToString(System.Globalization.CultureInfo.InvariantCulture)} {CommonConstants.CFGOVERRIDECOMMENT}");
+                }
+
             }
         }
 
